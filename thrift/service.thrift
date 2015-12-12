@@ -1,0 +1,3 @@
+service openRpcThriftService{
+  bool isLogon();
+}

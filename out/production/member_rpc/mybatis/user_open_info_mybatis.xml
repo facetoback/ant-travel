@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="UserOpenInfo">
+    <select id="select" parameterType="map" resultType="UserOpenInfo">
+        select id,client_id as clientId, branchno, success_flag as successFlag,sessionid,name,branch_name as branchName from user_open_info where phone = #{phone} and broker_no = #{brokerNo}
+    </select>
+
+    <insert id="insert" parameterType="UserOpenInfo" useGeneratedKeys="true" keyProperty="id">
+        insert into user_open_info(client_id,phone,broker_no,broker_name,branchno,success_flag,update_time,sessionid,name,branch_name,create_time)
+        values(#{clientId},#{phone},#{brokerNo},#{brokerName},#{branchno},#{successFlag},#{updateTime},#{sessionid},#{name},#{branchName},#{createTime})
+    </insert>
+
+    <update id="updateUserOpenInfo" parameterType="UserOpenInfo">
+        update user_open_info set client_id=#{clientId},phone=#{phone},broker_no=#{brokerNo},broker_name=#{brokerName},branchno=#{branchno},success_flag=#{successFlag},update_time=#{updateTime},sessionid=#{sessionid},branch_name=#{branchName} where id=#{id}
+    </update>
+
+    <update id="updatebranchName" parameterType="Map">
+        update user_open_info set name=#{name},branchno=#{branchno},branch_name=#{branchName} where phone=#{phone} and broker_no=#{brokerNo}
+    </update>
+
+</mapper>
