@@ -1,7 +1,7 @@
-package com.youguu.open.member.service.impl;
+package com.youguu.open.service.impl;
 
 
-import com.youguu.open.member.service.IOpenService;
+import com.youguu.open.service.IOpenService;
 import org.springframework.stereotype.Service;
 
 @Service(value = "openService")

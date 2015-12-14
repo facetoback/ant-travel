@@ -1,3 +1,3 @@
-service openRpcThriftService{
-  bool isLogon();
+service OpenRpcThriftService{
+  bool isLogon()
 }

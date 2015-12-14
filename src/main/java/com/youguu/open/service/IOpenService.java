@@ -1,4 +1,4 @@
-package com.youguu.open.member.service;
+package com.youguu.open.service;
 
 
 public interface IOpenService {

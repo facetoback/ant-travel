@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="AntRpcClient" default="release">
+	<property name="project.name" value="AntRpcClient-1.0" />
+	<property name="src" location="src" />
+	<property name="resource" location="${src}/resource" />
+	<property name="classpath" location="build/classes" />
+	<property name="dist" location="dist" />
+	<property name="AntRpcClient_lib" location="dist/AntRpcClient_lib" />
+	<property name="release" location="release" />
+
+	<pathconvert property="lib" pathsep=" ">
+		<mapper>
+			<chainedmapper>
+				<flattenmapper />
+				<globmapper from="*" to="AntRpcClient_lib/*" />
+			</chainedmapper>
+		</mapper>
+		<fileset dir="lib">
+			<include name="*.jar" />
+		</fileset>
+	</pathconvert>
+
+	<property name="libs" value="${lib}" />
+
+	<target name="init">
+		<delete dir="${dist}" />
+		<delete dir="${classpath}" />
+		<mkdir dir="${classpath}" />
+		<mkdir dir="${dist}" />
+	</target>
+
+	<target name="compile" depends="init">
+		<javac srcdir="${src}/java"
+			   includes="com/youguu/open/rpc/client/**,com/youguu/open/rpc/common/ClientMultiplexProp.java,
+			   com/youguu/open/rpc/common/ClientLoadImpl.java,
+			   com/youguu/open/rpc/common/Constants.java,
+			   com/youguu/open/rpc/thrift/gen/**,com/youguu/open/pojo/**"
+			   destdir="${classpath}"
+			   encoding="UTF-8"
+			   verbose="on"
+			   includeantruntime="off"
+			   fork="true">
+
+			<classpath>
+				<fileset dir="lib">
+					<include name="*.jar" />
+				</fileset>
+			</classpath>
+		</javac>
+	</target>
+
+	<target name="jar" depends="compile">
+		<jar destfile="${dist}/${project.name}.jar" update="true" basedir="${classpath}">
+			<manifest>
+				<attribute name="Class-Path" value=". ${libs}" />
+			</manifest>
+		</jar>
+	</target>
+
+	<target name="dist" depends="jar">
+		<mkdir dir="${dist}/AntRpcClient_lib" />
+	</target>
+
+	<target name="release" depends="dist">
+		<delete dir="${release}" />
+		<mkdir dir="${release}" />
+		<tar destfile="${release}/${project.name}.tar" basedir="dist" />
+		<gzip src="${release}/${project.name}.tar" zipfile="${release}/${project.name}.tar.gz" />
+	</target>
+
+
+</project>
+

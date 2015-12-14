@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="youguu.istock.api" default="release">
+    <property file="build.properties"/>
+    
+	<property name="project.name" value="youguu.istock.api" />
+	<property name="lib.dir" location="lib" />     
+	<property name="src" location="src/java" />
+	<property name="resource" location="src/resource" />       
+	<property name="classpath" location="build/classes" />     
+	<property name="dist" location="dist" />
+	<property name="release" location="release" />
+	
+	<path id="project.class.path">     
+		<pathelement path="${classpath}" />     
+		<fileset dir="${lib.dir}">     
+			    <include name="**/*.jar" />     
+		</fileset>     
+	</path>  
+	
+	
+	<pathconvert property="lib" pathsep=" ">
+		<!--mapper,对路径组合方式进行控制--> 	
+		<mapper>
+			<!--chainedmapper 作用是联合多个mapper--> 
+			<chainedmapper>
+				<!--过滤文件，将路径去掉，只保留文件名--> 
+				<flattenmapper /> 
+				<!--过滤+转换器，将所有的文件名前面都加上一个lib，我们知道lib目录下面有jar包，  
+                    lib/*的作用其实是将jar包名与路径进行组合形成如：lib/google.jar这样的相对路径  
+                 -->  
+				<globmapper from="*" to="lib/*"/>
+			</chainedmapper>
+		</mapper>
+		<!--按照mapper定义的格式组合lib目录下面的所有jar文件，形成诸如lib/jar1.jar lib/jar2.jar的字符串-->  
+		<fileset dir="lib">
+		    <include name="*.jar"/>
+		</fileset>
+	</pathconvert>
+	
+	<target name="init">
+		<delete dir="${dist}"/>
+		<delete dir="${classpath}" />
+	    <mkdir dir="${classpath}" />     
+	    <mkdir dir="${dist}" />  
+	</target>
+	
+	<target name="compile" depends="init" >
+		<javac srcdir="${src}" includes="com/youguu/" 
+			destdir="${classpath}" encoding="UTF-8" 
+			verbose="on" includeantruntime="off" debug="true">
+		 <classpath refid="project.class.path" /> 
+		</javac>  
+		<copydir dest="${classpath}/emoji" src="${resource}/emoji" ></copydir>
+	</target>
+	
+	<target name="jar" depends="compile">     
+	     <jar destfile="${dist}/${project.name}-2.0.jar" update="true" basedir="${classpath}" filesonly="false"> 
+	     	<manifest>     
+	            <attribute name="Main-Class" value="com.youguu.istock.job.Main" />  
+	            <attribute name="Class-Path" value="./ ${lib}" />
+	         </manifest>
+	     </jar>
+	</target>
+	
+	<target name="dist" depends="jar">
+		<mkdir dir="${dist}/lib"/>
+		<copydir dest="${dist}/lib" src="lib" ></copydir>
+		<copydir dest="${dist}/properties" src="${resource}/properties" ></copydir>
+		
+	</target>
+	
+	<target name="release" depends="dist">
+	    <delete dir="${release}"/>
+	    <mkdir dir="${release}"/>
+        <tar destfile="${release}/${project.name}.tar" basedir="dist"/>
+        <gzip src="${release}/${project.name}.tar" zipfile="${release}/${project.name}.tar.gz"/>
+    </target>
+		
+	<target name="run" depends="release">
+		<java jar="${dist}/${project.name}.jar" fork="true"></java>
+	</target>
+
+</project>
+

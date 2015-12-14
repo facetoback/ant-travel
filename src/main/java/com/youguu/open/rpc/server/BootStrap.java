@@ -4,9 +4,8 @@ import com.youguu.core.logging.Log;
 import com.youguu.core.logging.LogFactory;
 import com.youguu.core.util.PropertiesUtil;
 import com.youguu.core.util.rpc.ThriftRpcServer;
-import com.youguu.open.common.constants.Constants;
-import com.youguu.open.common.pojo.OpenFlow;
-import com.youguu.open.rpc.thrift.MultiplexProp;
+import com.youguu.open.rpc.common.Constants;
+import com.youguu.open.rpc.common.MultiplexProp;
 import com.youguu.open.util.ContextLoader;
 import org.apache.thrift.TMultiplexedProcessor;
 import org.apache.thrift.TProcessor;
@@ -23,7 +22,7 @@ import java.util.Properties;
  */
 public class BootStrap {
 
-    private static final Log logger = LogFactory.getLog(Constants.OPEN_SERVER_LOG);
+    private static final Log logger = LogFactory.getLog(Constants.ISTOCKRPC_CLIENT);
 
     public static void main(String[] args) {
 

@@ -1,13 +1,9 @@
-.gradle
 build
-gradle
-gradlew
-gradlew.bat
 logs
 *.iml
 *.ipr
 *.iws
-out
+out/
 *.classpath
 *.project
 .idea
@@ -16,4 +12,3 @@ out
 */bin
 dist
 release
-poolConfig.properties

@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="antRpcServer" default="release">
+	<property name="project.name" value="AntRpcServer" />
+	<property name="env" value="test" />
+	<property name="src" location="src" />
+	<property name="resource" location="build_config/${env}" />
+	<property name="classpath" location="build/classes" />
+	<property name="dist" location="dist" />
+	<property name="AntRpcServer_lib" location="dist/AntRpcServer_lib" />
+	<property name="release" location="release" />
+
+	<pathconvert property="lib" pathsep=" ">
+		<mapper>
+			<chainedmapper>
+				<flattenmapper />
+				<globmapper from="*" to="AntRpcServer_lib/*" />
+			</chainedmapper>
+		</mapper>
+		<fileset dir="lib">
+			<include name="*.jar" />
+		</fileset>
+	</pathconvert>
+
+	<property name="libs" value="${lib}" />
+
+	<target name="init">
+		<delete dir="${dist}"/>
+		<delete dir="${classpath}" />
+		<mkdir dir="${classpath}" />
+		<mkdir dir="${dist}" />
+	</target>
+
+	<target name="compile" depends="init" >
+		<javac srcdir="${src}/java"
+			   excludes="com/youguu/open/rpc/client/**,com/youguu/open/rpc/common/ClientMultiplexProp.java,
+			   com/youguu/open/rpc/common/ClientLoadImpl.java,
+			   com/youguu/open/rpc/thrift/gen/**"
+			   destdir="${classpath}" encoding="UTF-8" verbose="on" includeantruntime="off" >
+			<classpath>
+				<fileset dir="lib">
+					<include name="*.jar" />
+				</fileset>
+			</classpath>
+		</javac>
+	</target>
+
+	<target name="jar" depends="compile">
+		<jar destfile="${dist}/${project.name}.jar" update="true" basedir="${classpath}">
+			<manifest>
+				<attribute name="Class-Path" value=". ${libs}"/>
+				<attribute name="Main-Class" value="com.youguu.open.rpc.server.BootStrap" />
+			</manifest>
+		</jar>
+	</target>
+
+	<target name="dist" depends="jar">
+		<mkdir dir="${dist}/AntRpcServer_lib"/>
+		<copydir dest="${dist}/AntRpcServer_lib" src="lib"></copydir>
+
+		<mkdir dir="${dist}/properties"/>
+		<copy file="${resource}/properties/open_rpc_server.properties" tofile="${dist}/properties/open_rpc_server.properties"/>
+	</target>
+
+	<target name="release" depends="dist">
+		<delete dir="${release}"/>
+		<mkdir dir="${release}"/>
+		<tar destfile="${release}/${project.name}.tar" basedir="dist"/>
+		<gzip src="${release}/${project.name}.tar" zipfile="${release}/${project.name}.tar.gz"/>
+	</target>
+</project>
+
