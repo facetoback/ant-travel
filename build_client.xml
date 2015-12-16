@@ -31,10 +31,8 @@
 
 	<target name="compile" depends="init">
 		<javac srcdir="${src}/java"
-			   includes="com/youguu/open/rpc/client/**,com/youguu/open/rpc/common/ClientMultiplexProp.java,
-			   com/youguu/open/rpc/common/ClientLoadImpl.java,
-			   com/youguu/open/rpc/common/Constants.java,
-			   com/youguu/open/rpc/thrift/gen/**,com/youguu/open/pojo/**"
+			   includes="com/ant/open/rpc/client/**,com/ant/open/rpc/common/**,
+			   com/ant/open/rpc/thrift/gen/**"
 			   destdir="${classpath}"
 			   encoding="UTF-8"
 			   verbose="on"
