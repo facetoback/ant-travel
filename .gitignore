@@ -10,5 +10,5 @@ out/
 .settings
 /bin
 */bin
-dist
+dist/
 release

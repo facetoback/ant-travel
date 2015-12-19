@@ -9,19 +9,19 @@
     <property name="AntRpcServer_lib" location="dist/AntRpcServer_lib" />
     <property name="release" location="release" />
 
-    <pathconvert property="lib" pathsep=" ">
+    <pathconvert property="libs" pathsep=" ">
         <mapper>
             <chainedmapper>
                 <flattenmapper />
                 <globmapper from="*" to="AntRpcServer_lib/*" />
             </chainedmapper>
         </mapper>
-        <fileset dir="lib">
+        <fileset dir="libs">
             <include name="*.jar" />
         </fileset>
     </pathconvert>
 
-    <property name="libs" value="${lib}" />
+    <property name="libs" value="${libs}" />
 
     <target name="init">
         <delete dir="${dist}"/>
@@ -31,12 +31,12 @@
     </target>
 
     <target name="compile" depends="init" >
-        <javac srcdir="${src}/java"
+        <javac srcdir="${src}/main/java"
                excludes="com/ant/open/rpc/client/**,com/ant/open/rpc/common/**,
 			   com/ant/open/rpc/thrift/gen/**"
                destdir="${classpath}" encoding="UTF-8" verbose="on" includeantruntime="off" >
             <classpath>
-                <fileset dir="lib">
+                <fileset dir="libs">
                     <include name="*.jar" />
                 </fileset>
             </classpath>
@@ -54,7 +54,7 @@
 
     <target name="dist" depends="jar">
         <mkdir dir="${dist}/AntRpcServer_lib"/>
-        <copydir dest="${dist}/AntRpcServer_lib" src="lib"></copydir>
+        <copydir dest="${dist}/AntRpcServer_lib" src="libs"></copydir>
 
         <mkdir dir="${dist}/properties"/>
         <copy file="${resource}/properties/open_rpc_server.properties" tofile="${dist}/properties/open_rpc_server.properties"/>
