@@ -1,5 +1,6 @@
 package com.ant.open.rpc.client;
 
+import com.ant.open.rpc.thrift.gen.UserThrift;
 import com.youguu.core.logging.Log;
 import com.youguu.core.logging.LogFactory;
 import com.youguu.core.util.RPCServiceClient;
@@ -27,16 +28,42 @@ public class AntRpcClient implements OpenRpcThriftService.Iface {
         return null;
     }
 
+
     @Override
-    public boolean isLogon() throws TException {
+    public UserThrift login(String username, String password) throws TException {
         RPCMultiplexConnection conn = null;
         try {
             conn = getConnection();
-            return conn.getClient(OpenRpcThriftService.Client.class).isLogon();
+            return conn.getClient(OpenRpcThriftService.Client.class).login(username, password);
         } catch (Exception e) {
             if (e instanceof TApplicationException && ((TApplicationException) e).getType() == TApplicationException.MISSING_RESULT)
             {
-                return false;
+                return null;
+            }else{
+                conn.setIdle(false);
+                throw e;
+            }
+        }finally{
+            if(conn != null){
+                try {
+                    pool.returnObject(conn);
+                } catch (Exception e) {
+                    logger.error(e);
+                }
+            }
+        }
+    }
+
+    @Override
+    public int registe(String phone, String password, String nickname, int sex, String birthday, String avatar) throws TException {
+        RPCMultiplexConnection conn = null;
+        try {
+            conn = getConnection();
+            return conn.getClient(OpenRpcThriftService.Client.class).registe(phone, password, nickname, sex, birthday, avatar);
+        } catch (Exception e) {
+            if (e instanceof TApplicationException && ((TApplicationException) e).getType() == TApplicationException.MISSING_RESULT)
+            {
+                return 0;
             }else{
                 conn.setIdle(false);
                 throw e;

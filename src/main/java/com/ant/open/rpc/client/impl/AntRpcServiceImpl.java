@@ -1,10 +1,12 @@
 package com.ant.open.rpc.client.impl;
 
+import com.ant.open.pojo.User;
 import com.ant.open.rpc.client.AntRpcClient;
 import com.youguu.core.logging.Log;
 import com.youguu.core.logging.LogFactory;
 import com.ant.open.rpc.client.IAntRpcService;
 import com.ant.open.rpc.common.Constants;
+import com.youguu.core.util.ClassCast;
 import org.apache.thrift.TException;
 import org.springframework.stereotype.Service;
 
@@ -21,13 +23,24 @@ public class AntRpcServiceImpl implements IAntRpcService {
     }
 
     @Override
-    public boolean isLogon() {
+    public User login(String username, String password) {
         try {
-            return getClient().isLogon();
+            return ClassCast.cast(getClient().login(username, password), User.class);
 
         } catch (TException e) {
             logger.error(e);
         }
-        return false;
+        return null;
+    }
+
+    @Override
+    public int register(String phone, String password, String nickname, int sex, String birthday, String avatar) {
+        try {
+            return getClient().registe(phone, password, nickname, sex, birthday, avatar);
+
+        } catch (TException e) {
+            logger.error(e);
+        }
+        return 0;
     }
 }

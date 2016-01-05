@@ -9,7 +9,7 @@ public class AntRpcClientFactory {
     private static IAntRpcService antRpcService;
 
 
-    public static IAntRpcService getTweetRpcService(){
+    public static IAntRpcService getAntRpcService(){
         if (antRpcService!=null){
             return antRpcService;
         } else{

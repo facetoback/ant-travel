@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="User">
+
+    <select id="select" parameterType="map" resultType="User">
+        select id,nickname, sex, level,birthday,avatar_url as avatarUrl
+         from user where username = #{username} and password = #{password}
+    </select>
+
+    <insert id="insert" parameterType="User" useGeneratedKeys="true" keyProperty="id">
+        insert into user(phonenumber,nickname,password,sex,birthday,avatar_url)
+        values(#{phonenumber},#{nickname},#{password},#{sex},#{birthday},#{avatarUrl})
+    </insert>
+
+
+</mapper>

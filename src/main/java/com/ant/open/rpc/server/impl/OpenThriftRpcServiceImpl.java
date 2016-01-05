@@ -1,7 +1,9 @@
 package com.ant.open.rpc.server.impl;
 
+import com.ant.open.rpc.thrift.gen.UserThrift;
 import com.ant.open.service.IOpenService;
 import com.ant.open.rpc.thrift.gen.OpenRpcThriftService;
+import com.youguu.core.util.ClassCast;
 import org.apache.thrift.TException;
 import org.springframework.stereotype.Service;
 
@@ -17,7 +19,12 @@ public class OpenThriftRpcServiceImpl implements OpenRpcThriftService.Iface {
     private IOpenService openService;
 
     @Override
-    public boolean isLogon() throws TException {
-        return openService.isLogon();
+    public UserThrift login(String username, String password) throws TException {
+        return ClassCast.cast(openService.login(username, password), UserThrift.class);
+    }
+
+    @Override
+    public int registe(String phone, String password, String nickname, int sex, String birthday, String avatar) throws TException {
+        return openService.register(phone, password, nickname, sex, birthday, avatar);
     }
 }
