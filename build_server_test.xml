@@ -56,8 +56,9 @@
 		<mkdir dir="${dist}/AntRpcServer_lib"/>
 		<copydir dest="${dist}/AntRpcServer_lib" src="libs"></copydir>
 
-		<mkdir dir="${dist}/properties"/>
-		<copy file="${resource}/properties/open_rpc_server.properties" tofile="${dist}/properties/open_rpc_server.properties"/>
+		<copydir dest="${dist}" src="${resource}"></copydir>
+		<copydir dest="${dist}/mybatis" src="${src}/main/resources/mybatis"></copydir>
+
 	</target>
 
 	<target name="release" depends="dist">

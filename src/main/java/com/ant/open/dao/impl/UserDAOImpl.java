@@ -22,7 +22,7 @@ public class UserDAOImpl extends BasicDAO<User> implements UserDAO {
         map.put("username", username);
         map.put("password", password);
 
-        return this.findUniqueBy("login", map );
+        return this.findUniqueBy("select", map );
     }
 
     @Override
