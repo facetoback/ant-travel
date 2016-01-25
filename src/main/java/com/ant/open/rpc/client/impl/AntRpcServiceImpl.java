@@ -1,7 +1,9 @@
 package com.ant.open.rpc.client.impl;
 
+import com.ant.open.pojo.Journey;
 import com.ant.open.pojo.User;
 import com.ant.open.rpc.client.AntRpcClient;
+import com.ant.open.rpc.thrift.gen.JourneyThrift;
 import com.youguu.core.logging.Log;
 import com.youguu.core.logging.LogFactory;
 import com.ant.open.rpc.client.IAntRpcService;
@@ -42,5 +44,27 @@ public class AntRpcServiceImpl implements IAntRpcService {
             logger.error(e);
         }
         return 0;
+    }
+
+    @Override
+    public int publishJourney(Journey journey) {
+        try {
+            return getClient().publishJourney(ClassCast.cast(journey, JourneyThrift.class));
+
+        } catch (TException e) {
+            logger.error(e);
+        }
+        return 0;
+    }
+
+    @Override
+    public Journey getJourney(int id) {
+        try {
+            return ClassCast.cast(getClient().getJourney(id), Journey.class);
+
+        } catch (TException e) {
+            logger.error(e);
+        }
+        return null;
     }
 }

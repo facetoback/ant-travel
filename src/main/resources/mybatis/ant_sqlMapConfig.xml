@@ -4,10 +4,12 @@
 <configuration>
     <typeAliases>
         <typeAlias type="com.ant.open.pojo.User" alias="User"/>
+        <typeAlias type="com.ant.open.pojo.Journey" alias="Journey"/>
     </typeAliases>
 
 
     <mappers>
         <mapper resource="mybatis/user_mybatis.xml"/>
+        <mapper resource="mybatis/journey_mybatis.xml"/>
     </mappers>
 </configuration>

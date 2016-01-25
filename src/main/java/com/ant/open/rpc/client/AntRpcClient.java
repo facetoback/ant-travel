@@ -1,5 +1,6 @@
 package com.ant.open.rpc.client;
 
+import com.ant.open.rpc.thrift.gen.JourneyThrift;
 import com.ant.open.rpc.thrift.gen.UserThrift;
 import com.youguu.core.logging.Log;
 import com.youguu.core.logging.LogFactory;
@@ -64,6 +65,56 @@ public class AntRpcClient implements OpenRpcThriftService.Iface {
             if (e instanceof TApplicationException && ((TApplicationException) e).getType() == TApplicationException.MISSING_RESULT)
             {
                 return 0;
+            }else{
+                conn.setIdle(false);
+                throw e;
+            }
+        }finally{
+            if(conn != null){
+                try {
+                    pool.returnObject(conn);
+                } catch (Exception e) {
+                    logger.error(e);
+                }
+            }
+        }
+    }
+
+    @Override
+    public int publishJourney(JourneyThrift journey) throws TException {
+        RPCMultiplexConnection conn = null;
+        try {
+            conn = getConnection();
+            return conn.getClient(OpenRpcThriftService.Client.class).publishJourney(journey);
+        } catch (Exception e) {
+            if (e instanceof TApplicationException && ((TApplicationException) e).getType() == TApplicationException.MISSING_RESULT)
+            {
+                return 0;
+            }else{
+                conn.setIdle(false);
+                throw e;
+            }
+        }finally{
+            if(conn != null){
+                try {
+                    pool.returnObject(conn);
+                } catch (Exception e) {
+                    logger.error(e);
+                }
+            }
+        }
+    }
+
+    @Override
+    public JourneyThrift getJourney(int id) throws TException {
+        RPCMultiplexConnection conn = null;
+        try {
+            conn = getConnection();
+            return conn.getClient(OpenRpcThriftService.Client.class).getJourney(id);
+        } catch (Exception e) {
+            if (e instanceof TApplicationException && ((TApplicationException) e).getType() == TApplicationException.MISSING_RESULT)
+            {
+                return null;
             }else{
                 conn.setIdle(false);
                 throw e;

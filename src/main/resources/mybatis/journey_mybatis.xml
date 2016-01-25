@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Journey">
+
+    <insert id="insert" parameterType="Journey" useGeneratedKeys="true" keyProperty="id">
+        insert into journey(`user_id`, `origin`,`destination`,
+          `trip_mode`,`start_date`,`day_count`,`partner_count` ,`has_male_count` ,
+          `has_female_count`,`need_male_count`,`need_female_count`,`detail`,
+          `collect_count`,`up_count`,`share_count` ,`comment_count`,`status`,
+          `create_time`,`update_time`,`sex_limit` ,`public_phone`,`public_wechat` )
+        values
+        (#{userId},#{origin},#{destination},#{tripMode},#{startDate},#{dayCount},
+        #{partnerCount},#{hasMaleCount},#{hasFemaleCount},#{needMaleCount},#{needFemaleCount},
+        #{detail},
+        #{collectCount},#{upCount},#{shareCount},#{commentCount},#{status},#{createTime},
+        #{updateTime},#{sexLimit},#{publicPhone},#{publicWechat})
+    </insert>
+
+    <select id="select" parameterType="int" resultType="Journey">
+      SELECT `user_id` as userId, `origin`,`destination`,
+      `trip_mode` as tripMode,`start_date` as startDate, `day_count` as dayCount,
+      `partner_count` as partnerCount,`has_male_count` as hasMaleCount,
+      `has_female_count` as hasFemaleCount,`need_male_count` as needMaleCount,
+      `need_female_count` as needFemaleCount,`detail`,
+      `collect_count` as collectCount, `up_count` as upCount,`share_count` as shareCount,
+      `comment_count` as commentCount,`status`,
+      `create_time` as createTime,`update_time` as updateTime,
+      `sex_limit` as sexLimit,`public_phone` as publicPhone,`public_wechat` as publicWechat
+      from journey
+      where id = #{id}
+    </select>
+
+    <select id="getList" parameterType="Map" resultType="List">
+        SELECT `user_id` as userId, `origin`,`destination`,
+        `trip_mode` as tripMode,`start_date` as startDate, `day_count` as dayCount,
+        `partner_count` as partnerCount,`has_male_count` as hasMaleCount,
+        `has_female_count` as hasFemaleCount,`need_male_count` as needMaleCount,
+        `need_female_count` as needFemaleCount,`detail`,
+        `collect_count` as collectCount, `up_count` as upCount,`share_count` as shareCount,
+        `comment_count` as commentCount,`status`,
+        `create_time` as createTime,`update_time` as updateTime,
+        `sex_limit` as sexLimit,`public_phone` as publicPhone,`public_wechat` as publicWechat
+        from journey
+        limit #{pageStart}, #{pageSize}
+    </select>
+</mapper>
